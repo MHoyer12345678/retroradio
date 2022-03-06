@@ -50,8 +50,8 @@ qemu-debootstrap --variant minbase --components $DEBIAN_COMPONENTS --include=$PA
 #installing kernel modules
 echo "Installing kernel modules ..."
 mkdir $RFS_DIR/lib/modules || exit 1
-cp -r $BSP_DIR/firmware-master/modules/*-v7+ $RFS_DIR/lib/modules/ || exit 1
-cp -r $BSP_DIR/firmware-master/modules/*+ $RFS_DIR/lib/modules/ || exit 1
+cp -r $BSP_DIR/firmware/modules/*-v7+ $RFS_DIR/lib/modules/ || exit 1
+cp -r $BSP_DIR/firmware/modules/*+ $RFS_DIR/lib/modules/ || exit 1
 
 
 echo "Doing some modifications in the RFS ..."
