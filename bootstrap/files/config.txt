@@ -1,0 +1,2 @@
+enable_uart=1
+dtoverlay=gpio-ir,gpio_pin=4

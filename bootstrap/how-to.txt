@@ -1,0 +1,36 @@
+############### how to create the retroradio image ##############################
+- prepare SD card
+  * 100MB, type 0x0c, vfat
+  * 4GB, type Linux, ext4
+  * 10MB, type Linux, no fs
+  * XGB, type Linux, ext4
+
+- create bootstrap RFS using "./01_assemble_rfs.sh "
+
+- create online package using "./02_create-online-package.sh"
+
+- deploy kernel using "./03_deploy_kernel_on_sd_card.sh <mount point of p1>"
+
+- deploy RFS using "./04_deploy_rfs_on_sd_card.sh <mount point of p2>"
+
+- boot with raspberry pi with serial connected
+
+- login as joe and change password
+
+- login as root and change password
+
+- change hostname respectively (echo <hostname> > /etc/hostname)
+
+- install new kernel: cd into online_package, call ./05_install-kernel.sh
+
+- reboot
+
+- install network-setup: cd into online_package, call ./06_setup-wifi.sh
+
+- install SW: call ./07_install-software.sh
+
+- mount boot and add "quiet" to kernel cmd line and change "rw" to "ro"
+
+- reboot
+
+
