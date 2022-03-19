@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEBIAN_DISTRIBUTION=buster
+DEBIAN_DISTRIBUTION=bullseye
 DEBIAN_MIRROR=http://ftp.de.debian.org/debian
 DEBIAN_COMPONENTS=main,non-free
 

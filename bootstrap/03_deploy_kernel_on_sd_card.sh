@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BSP_DIR=./rasp-bsp/firmware-master
+BSP_DIR=./rasp-bsp/firmware
 
 if [ $# -eq 0 ]; then
     echo "mount point missing ..."
