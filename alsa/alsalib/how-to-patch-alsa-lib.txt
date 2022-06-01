@@ -1,0 +1,11 @@
+# how to create a debian package with the patched libasound2
+
+- download source package alsa-lib for the used distribution
+- extract it (dpkg-source -x *.dsc)
+- cd into source tree (cd alsa-lib-*)
+- patch the source tree (atch -p1 < ../../0008-disconneced-state-after-enodev-from-poll.patch)
+- increase debian number as unreleased change (dch --n)
+- commit changes to source package (dpkg-source --commit)
+- rebuild source package (dpkg-buildpackage -S -uc -us)
+- source pbuilder environment of project
+- build binary package

@@ -1,0 +1,24 @@
+Description: Return state DISCONNECTED on -ENODEV from IOCTL 
+ An IOCTL failed with -ENODEV indicates a removed sound device. snd_pcm_hw_state
+ is modified in a way that it returns state DISCONNECTED when receiving -ENODEV
+ from query_status_data.
+ .
+ alsa-lib (1.1.8-2) unstable; urgency=medium
+ .
+   * snd_pcm_hw_state returns DISCONNECED when receiving -ENODEV from query_status_data
+Author: Marko Hoyer <joe@muffel.de> 
+
+--- alsa-lib-1.1.8.orig/src/pcm/pcm_hw.c
++++ alsa-lib-1.1.8/src/pcm/pcm_hw.c
+@@ -597,6 +597,11 @@ static snd_pcm_state_t snd_pcm_hw_state(
+ {
+ 	snd_pcm_hw_t *hw = pcm->private_data;
+ 	int err = query_status_data(hw);
++
++	//disconnected HW is reported via a failed IOCTL return -ENODEV
++	if (err == -ENODEV)
++		return SND_PCM_STATE_DISCONNECTED;
++	
+ 	if (err < 0)
+ 		return err;
+ 	return (snd_pcm_state_t) hw->mmap_status->state;
