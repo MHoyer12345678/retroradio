@@ -1,4 +1,11 @@
 ############### how to create the retroradio image ##############################
+
+#1: Offline image using empty sd card
+#2: Using running retroradio with existing productive image
+
+
+#1: Offline image using empty sd card
+-------------------------------------
 - prepare SD card
   * 100MB, type 0x0c, vfat
   * 4GB, type Linux, ext4
@@ -28,6 +35,69 @@
 - install network-setup: cd into online_package, call ./06_setup-wifi.sh
 
 - install SW: call ./07_install-software.sh
+
+- install patched libasound (deb package)
+
+- mount boot and add "quiet" to kernel cmd line and change "rw" to "ro"
+
+- reboot
+
+
+#2: Using running retroradio with existing productive image
+-----------------------------------------------------------
+- expectation on SD card layout
+  * P1: 100MB, type 0x0c, vfat: exists to boot running image
+  * P2: 4GB, type Linux, ext4: exists with RFS of running image
+  * P3: 10MB, type Linux, no fs: exists to keep persistent data
+  * P4: XGB, type Linux, ext4: free to take the new image
+
+- create bootstrap RFS using "./01_assemble_rfs.sh "
+
+- create online package using "./02_create-online-package.sh"
+
+- pack rfs into image using "./03b_pack_image.sh"
+
+- login on embedded device as root
+  * mount rfs rw & install "os-developer-mode" package (once per device only)
+  * mount partition for development image (mount /dev/mmcblk0p4 /mnt)
+  * add rw rights to user (chmod a+rwx /mnt)
+
+- copy image to target (scp ./image.tar user@target:/mnt)
+
+- login on embedded device as root
+* change to mounted development partition (cd /mnt)
+* unpack image (tar -xf image.tar)
+* copy kernel modules to development rfs (KNLV=$(uname -r); cp -r /lib/modules/$KNLV /mnt/lib/modules/.)
+
+- chroot into and prepare installation
+* /sbin/chroot /mnt
+* change root password (passwd)
+* change user password (passwd joe)
+* change hostname respectively (echo <hostname> > /etc/hostname)
+* change to online package folder (cd /root/online-package)
+* isntall network package (./06_setup-wifi.sh)
+* exit from chroot (exit)
+
+- trigger reboot into developer image and reboot
+  * set trigger (/usr/sbin/trigger-developer-rfs-boot.sh)
+  * reboot (systemctl reboot)
+
+- install SW: call ./07_install-software.sh-
+- install patched libasound (deb package)
+
+
+TODO:
+- change default mount options in devel-init script to rw
+- set path variable properly (ssh login -> su -> no path set)
+- set date in online case
+
+
+>>>>>>> from here on work in progress ..............
+
+
+
+
+
 
 - mount boot and add "quiet" to kernel cmd line and change "rw" to "ro"
 
