@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGES="vim locales mpd mpc wpasupplicant isc-dhcp-client rr-early-device-setup basic-startup-conf retroradio-ctrl"
+PACKAGES="systemd-timesyncd vim locales mpd mpc wpasupplicant isc-dhcp-client rr-early-device-setup basic-startup-conf retroradio-ctrl"
 
 if [ $UID -ne 0 ]; then
     echo "Please run as root ..."
@@ -8,6 +8,11 @@ if [ $UID -ne 0 ]; then
 fi
 
 echo "Installing userland software ..."
+
+echo "Setting time read from time.txt"
+
+timeToSet=$(cat time.txt)
+date -s "${timeToSet}"
 
 echo "Installing package repo list files."
 cp apt-sources/*.list /etc/apt/sources.list.d/ || exit 1
