@@ -78,6 +78,9 @@ echo "joe::17994:0:99999:7:::" >> $RFS_DIR/etc/shadow || exit 1
 mkdir $RFS_DIR/home/joe/.ssh
 cp files/id_rsa.pub $RFS_DIR/home/joe/.ssh/authorized_keys
 
+#install .profile to user home
+cp files/profile $RFS_DIR/home/joe/.profile
+
 #installing some configuration files
 cp files/interfaces $RFS_DIR/etc/network/ || exit 1
 
